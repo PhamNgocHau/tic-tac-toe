@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Caro_pro</title>
+    <style>
+        body {
+            background-image: url("images.jpg");
+        }
+
+        #turnInfo {
+            margin-top: 135px;
+            margin-left: 510px;
+            font-size: 30px;
+            font-weight: 900;
+            color: #181fe2;
+            font-family: ".VnArabia";
+            text-shadow: 2px 2px red;
+        }
+
+        .tbl {
+            margin-top: 10px;
+            margin-left: 480px;
+            border: 2px solid red;
+            width: 280px;
+            height: 200px;
+        }
+
+        .row {
+            border: 1px solid royalblue;
+            text-align: center;
+            width: 50px;
+            font-size: 25px;
+            color: #181fe2;;
+            font-weight: 900;
+        }
+
+        .col {
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+<div id="turnInfo" class="turnInfo"> Play Turn: O</div>
+<div class="container">
+    <table class="tbl">
+        <tr class="col">
+            <td class="row" value="1" onclick='canvasClicked(this);'></td>
+            <td class="row" value="2" onclick='canvasClicked(this);'></td>
+            <td class="row" value="3" onclick='canvasClicked(this);'></td>
+            <td class="row" value="4" onclick='canvasClicked(this);'></td>
+            <td class="row" value="5" onclick='canvasClicked(this);'></td>
+        </tr>
+        <tr class="col">
+            <td class="row" value="6" onclick='canvasClicked(this);'></td>
+            <td class="row" value="7" onclick='canvasClicked(this);'></td>
+            <td class="row" value="8" onclick='canvasClicked(this);'></td>
+            <td class="row" value="9" onclick='canvasClicked(this);'></td>
+            <td class="row" value="10" onclick='canvasClicked(this);'></td>
+        </tr>
+        <tr class="col">
+            <td class="row" value="11" onclick='canvasClicked(this);'></td>
+            <td class="row" value="12" onclick='canvasClicked(this);'></td>
+            <td class="row" value="13" onclick='canvasClicked(this);'></td>
+            <td class="row" value="14" onclick='canvasClicked(this);'></td>
+            <td class="row" value="15" onclick='canvasClicked(this);'></td>
+        </tr>
+        <tr class="col">
+            <td class="row" value="16" onclick='canvasClicked(this);'></td>
+            <td class="row" value="17" onclick='canvasClicked(this);'></td>
+            <td class="row" value="18" onclick='canvasClicked(this);'></td>
+            <td class="row" value="19" onclick='canvasClicked(this);'></td>
+            <td class="row" value="20" onclick='canvasClicked(this);'></td>
+        </tr>
+        <tr class="col">
+            <td class="row" value="21" onclick='canvasClicked(this);'></td>
+            <td class="row" value="22" onclick='canvasClicked(this);'></td>
+            <td class="row" value="23" onclick='canvasClicked(this);'></td>
+            <td class="row" value="24" onclick='canvasClicked(this);'></td>
+            <td class="row" value="25" onclick='canvasClicked(this);'></td>
+        </tr>
+    </table>
+
+    <script>
+        var cells = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        var turn = 'O';
+        var infoDiv = document.getElementById('turnInfo');
+
+        function toggleTurn() {
+            turn = turn == 'O' ? 'X' : 'O';
+            infoDiv.innerHTML = 'Play Turn : ' + turn;
+            infoDiv.style.color = '#ff0006';
+            infoDiv.style.textShadow = '3px 2px #181fe2';
+            return turn;
+        }
+
+        function canvasClicked(value) {
+            var valueIndex = value.getAttribute('value');
+            if (!cells[valueIndex]) {
+                cells[valueIndex] = toggleTurn();
+                value.innerHTML = turn;
+                checkWinner();
+            }
+        }
+
+        function checkWinner() {
+            playWinner = [
+                [1, 2, 3, 4, 5],
+                [6, 7, 8, 9, 10],
+                [11, 12, 13, 14, 15],
+                [16, 17, 18, 19, 20],
+                [21, 22, 23, 24, 25, 26],
+                [1, 6, 11, 16, 21],
+                [2, 7, 12, 17, 22],
+                [3, 8, 13, 18, 23],
+                [4, 9, 14, 19, 24],
+                [5, 10, 15, 20, 25],
+                [1, 7, 13, 19, 25],
+                [5, 9, 13, 17, 21]
+
+            ];
+            for (var index = 0; index < playWinner.length; index++) {
+                Winner = playWinner[index];
+                if (cells[Winner[0]] != 0 &&
+                    cells[Winner[0]] == cells[Winner[1]] &&
+                    cells[Winner[1]] == cells[Winner[2]] &&
+                    cells[Winner[2]] == cells[Winner[3]] &&
+                    cells[Winner[3]] == cells[Winner[4]]) {
+                    alert(turn + ' is Winner')
+                    playAgain();
+                    return;
+                }
+                if (cells[Winner[0] != 0] &&
+                    cells[Winner[1]] == cells[Winner[3]] &&
+                    cells[Winner[3] !=0]) {
+                    alert(turn + ' is Winner')
+                    playAgain();
+                    return;
+                }
+            }
+            var allCellsFilled = 1;
+            for (var index = 1; index < cells.length; index++) {
+                if (!cells[index]) {
+                    allCellsFilled = 0;
+                    break;
+                }
+            }
+            if (allCellsFilled) {
+                alert('Game is Draw!');
+                playAgain();
+            }
+        }
+
+        function playAgain() {
+            y = confirm('PLAY AGAIN');
+            if (y == true) {
+                location.reload(true);
+            } else {
+                alert('Good Bye Then!');
+            }
+        }
+    </script>
+</div>
+</body>
+</html>
